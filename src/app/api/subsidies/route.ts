@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { type CategoryId } from "@/lib/categories";
 import { fetchEligibleSubsidies } from "@/lib/jgrants";
+import { filterManualSubsidies } from "@/lib/manual-subsidies";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -32,7 +33,16 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const subsidies = await fetchEligibleSubsidies({ keyword, category });
+    const [apiSubsidies, manualSubsidies] = await Promise.all([
+      fetchEligibleSubsidies({ keyword, category }),
+      Promise.resolve(filterManualSubsidies({ keyword, category })),
+    ]);
+
+    const merged = new Map<string, (typeof apiSubsidies)[number]>();
+    for (const subsidy of [...manualSubsidies, ...apiSubsidies]) {
+      merged.set(subsidy.id, subsidy);
+    }
+    const subsidies = Array.from(merged.values());
 
     return NextResponse.json({
       count: subsidies.length,

@@ -12,13 +12,23 @@ export type Subsidy = {
   id: string;
   title: string;
   category: Exclude<CategoryId, "all">;
+  /** 複数カテゴリに該当する手動追加データ用 */
+  categories?: Exclude<CategoryId, "all">[];
   scope: ScopeTag;
+  /** スコープ以外の追加タグ（例：随時受付） */
+  tags?: string[];
   amount: string;
   deadline: string;
   target: string;
   summary: string;
   url: string;
 };
+
+export function getSubsidyCategories(
+  subsidy: Subsidy,
+): Exclude<CategoryId, "all">[] {
+  return subsidy.categories ?? [subsidy.category];
+}
 
 export type Category = {
   id: CategoryId;

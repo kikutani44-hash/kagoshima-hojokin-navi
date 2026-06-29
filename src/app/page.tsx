@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   CATEGORIES,
+  getSubsidyCategories,
   type CategoryId,
   type ScopeTag,
   type Subsidy,
@@ -129,7 +130,11 @@ export default function Home() {
 
   const filteredSubsidies = useMemo(() => {
     return subsidies.filter((subsidy) => {
-      return selectedCategory === "all" || subsidy.category === selectedCategory;
+      if (selectedCategory === "all") {
+        return true;
+      }
+
+      return getSubsidyCategories(subsidy).includes(selectedCategory);
     });
   }, [selectedCategory, subsidies]);
 
@@ -253,12 +258,25 @@ export default function Home() {
                     >
                       {subsidy.scope}
                     </span>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
-                      <span aria-hidden="true">
-                        {getCategoryIcon(subsidy.category)}
+                    {subsidy.tags?.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-700"
+                      >
+                        {tag}
                       </span>
-                      {getCategoryLabel(subsidy.category)}
-                    </span>
+                    ))}
+                    {getSubsidyCategories(subsidy).map((category) => (
+                      <span
+                        key={category}
+                        className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700"
+                      >
+                        <span aria-hidden="true">
+                          {getCategoryIcon(category)}
+                        </span>
+                        {getCategoryLabel(category)}
+                      </span>
+                    ))}
                     <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
                       {subsidy.amount}
                     </span>
@@ -295,6 +313,10 @@ export default function Home() {
             </ul>
           )}
         </section>
+
+        <p className="mt-8 text-center text-xs leading-6 text-slate-400">
+          ※鹿児島県・市の独自補助金は随時更新しています。最新情報は情報を更新するボタンを押してください。
+        </p>
       </div>
     </main>
   );
