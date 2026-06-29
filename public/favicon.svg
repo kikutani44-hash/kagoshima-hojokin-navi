@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Yen banknote">
+  <rect width="32" height="32" rx="6" fill="#22c55e" />
+  <rect
+    x="3"
+    y="7"
+    width="26"
+    height="18"
+    rx="2.5"
+    fill="#bbf7d0"
+    stroke="#15803d"
+    stroke-width="1.5"
+  />
+  <circle
+    cx="16"
+    cy="16"
+    r="6.5"
+    fill="#dcfce7"
+    stroke="#15803d"
+    stroke-width="1.2"
+  />
+  <path
+    fill="#166534"
+    d="M12.2 11.8h1.3l1.8 3.4 1.8-3.4h1.3l-2.4 4.1v1.6h-1.4v-1.6L12.2 11.8zm-.2 7.2h7.8v1.2h-7.8v-1.2zm0 2.4h7.8v1.2h-7.8v-1.2z"
+  />
+</svg>
